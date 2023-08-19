@@ -17,7 +17,6 @@ MODE = "predict"
 TRAIN_IMG_PATH = "H:/TibaMe_TeamProject/projects/img_data/data/train/*/*"
 VAL_IMG_PATH = "H:/TibaMe_TeamProject/projects/img_data/data/val/*/*"
 PRE_IMG_PATH = "H:/TibaMe_TeamProject/projects/img_data/data/test/A05S/*"
-# PRE_IMG_PATH = "H:/TibaMe_TeamProject/projects/img_data/data/test/A05S/A05S_SS_002.png"    # <- 要辨識的圖片路徑放這裡
 WEIGHT_PATH = "best.pt"
 
 IMG_SIZE = 512
