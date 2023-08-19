@@ -3,37 +3,6 @@ from PIL import Image
 import torch
 import torchvision.transforms as transforms
 
-
-
-# class MyDataset(torch.utils.data.Dataset):
-#     def __init__(self, img_paths, classes_name:list, transform, img_size:tuple) -> None:
-#         self.img_paths = img_paths
-#         self.img_width = img_size[0]        
-#         self.img_height = img_size[1]        
-#         self.class_map = {name:i for i, name in enumerate(classes_name)}
-#         self.transform = transform
-
-#     def __len__(self):
-#         # Number of samples.  樣本數量
-#         return len(self.img_paths)
-
-#     def __getitem__(self, idx):
-#         # Read img.
-#         path = self.img_paths[idx]
-#         img = cv2.imread(path)
-#         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-#         img = cv2.resize(img, (self.img_width, self.img_height))
-
-#         # Transform img to tensor (3, H, W).
-#         img = self.transform(img) 
-
-#         # Read class index.
-#         class_name = path.split("\\")[-1].split("_")[0]
-#         class_idx = self.class_map[class_name]
-#         class_idx = torch.tensor(class_idx, dtype=torch.float64)
-        
-#         return img, class_idx  
-
 class MyDataset(torch.utils.data.Dataset):
     def __init__(self, img_paths, cls_map, transform):
         self.img_paths = img_paths
@@ -54,8 +23,9 @@ class MyDataset(torch.utils.data.Dataset):
         img = self.transform(img)
 
         # Read class index.
-        cls_name = path.split("\\")[-1].split("_")[0]  # 95 個類別都要放
-        # cls_name = path.split("/")[-1].split("_")[0]  # 單張
+        # cls_name = path.split("\\")[-1].split("_")[0]  # 95 個類別都要放
+        # cls_name = path.split("_")[0]  # 單張
+        cls_name = path.split("_")[3][3:7]
         cls_idx = self.cls_map[cls_name]
         cls_idx = torch.tensor(cls_idx, dtype=torch.int64)
         # cls_idx = cls_idx.unsqueeze(dim=0)

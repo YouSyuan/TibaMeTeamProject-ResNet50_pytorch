@@ -29,7 +29,9 @@ def train(train_paths, val_paths, classes_name, img_size=512, batch_size=16, epo
 
     # Training
     loss_fn = nn.CrossEntropyLoss()  # 損失函數
-    optimizer = torch.optim.AdamW(model.parameters())  # 優化器
+    optimizer = torch.optim.Adam(model.parameters())  # 優化器
+    # optimizer = torch.optim.AdamW(model.parameters())
+    # optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
     model = model.to(device)
 
     logs = {'train_loss': [], 'train_acc': [], 'val_loss': [], 'val_acc': []}

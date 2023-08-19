@@ -122,7 +122,7 @@ def dataCollation(true, pre_cls, pre_probs, classes_name, weight_path, f1c=False
     print(c)
 
     if f1c:
-        # F1 scores
+        # F1 scores  (還會報錯)
         F1_scores = f1_score(true, pre_cls, average='macro')  # 計算 F1 分數
         Precision_score = precision_score(true, pre_cls)  # 計算精確率
         Acc_score = accuracy_score(true, pre_cls)  # 計算準確率
