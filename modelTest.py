@@ -55,31 +55,3 @@ def predict(model_path, img_paths, batch_size=16, device="cpu"):
 
     return y_true, y_pred_cls, y_pred_probs  # 真實標籤, 預測類別的索引, 該預測每個類別的概率
 
-
-
-
-
-
-
-if __name__ == "__main__":
-    import glob
-    from sklearn.metrics import (
-    classification_report,
-    confusion_matrix,
-    recall_score,
-    precision_score,
-    f1_score,
-    accuracy_score,
-    ConfusionMatrixDisplay,
-    roc_curve,
-    auc
-)
-    
-    WEIGHT_PATH = "run/train1/best.pt"
-    TEST_IMG_PATH = glob.glob("test/*")
-    print(len(TEST_IMG_PATH))
-    true, pre_cls, pre_probs = predict(WEIGHT_PATH, TEST_IMG_PATH, batch_size=16, device="cuda")
-
-    fp_rate, tp_rate, threshold = roc_curve(true, pre_probs)
-
-    torch.cuda.empty_cache()
