@@ -15,31 +15,6 @@ from pytorch_grad_cam.utils.image import show_cam_on_image, preprocess_image
 from resnet50model import myResNet50
 
 
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-IMG_SIZE = 512
-
-
-# transform = ResNet50_Weights.DEFAULT.transforms()
-# model = resnet50(weights=ResNet50_Weights.DEFAULT).to(DEVICE)
-
-transform = transforms.Compose([
-    transforms.Resize((IMG_SIZE, IMG_SIZE)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
-# model = myResNet50(95)
-model = resnet50(weights=ResNet50_Weights.IMAGENET1K_V2)
-num_features = model.fc.in_features
-model.fc = torch.nn.Linear(num_features, 95)
-model.load_state_dict(torch.load("run/train2_AdamW/best.pt"))
-model.to(DEVICE)
-# print(model) 
-   
-
-target_layer = [model.layer4[-1]]
-# print(target_layer)
-
-
 def read_img(filepath, img_size):
     img = Image.open(filepath).resize((img_size, img_size))
     return img
@@ -71,10 +46,34 @@ def visualize(img, method, img_size, target_category=None):
     cam_on_img = show_cam_on_image(np.array(img)/255., grayscale_cam, use_rgb=True)
 
     return grayscale_cam, cam_on_img
+
+
+
 import glob
 paths = glob.glob("H:/TibaMe_TeamProject/projects/img_data/data/test_SS/A12E/*")
 
-# path = "H:/TibaMe_TeamProject/projects/img_data/data/test_SS/A12E/A12E_SS_008.png"
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+IMG_SIZE = 512
+
+
+# transform = ResNet50_Weights.DEFAULT.transforms()
+# model = resnet50(weights=ResNet50_Weights.DEFAULT).to(DEVICE)
+
+transform = transforms.Compose([
+    transforms.Resize((IMG_SIZE, IMG_SIZE)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+])
+model = resnet50(weights=ResNet50_Weights.IMAGENET1K_V2)
+num_features = model.fc.in_features
+model.fc = torch.nn.Linear(num_features, 95)
+model.load_state_dict(torch.load("run/train2_AdamW/best.pt"))
+model.to(DEVICE)
+# print(model) 
+   
+
+target_layer = [model.layer4[-1]]
+
 for path in paths:
     img = read_img(path, IMG_SIZE)
     img = transform(img).unsqueeze(0).to(DEVICE)
@@ -94,6 +93,8 @@ for path in paths:
                                             img_size=IMG_SIZE,
                                             target_category=None)
     save_path = path.split("\\")[-1]
+
+    
     # plot
     plt.figure(figsize=(15, 5))
     plt.subplot(1, 3, 1)
